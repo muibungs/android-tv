@@ -25,9 +25,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.leanback.app.BackgroundManager
 import androidx.leanback.app.RowsSupportFragment
-import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.*
+import com.example.myapplication.model.CardListRow
+import com.example.myapplication.model.CardRow
+import com.example.myapplication.ui.presenter.CardPresenterSelector
 import com.example.myapplication.R
+import com.example.myapplication.Utils
+import com.google.gson.Gson
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -47,20 +52,85 @@ class MainFragment : RowsSupportFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val gridPresenter =
-            VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_MEDIUM)
-        gridPresenter.numberOfColumns = 4
-//        setGridPresenter(gridPresenter)
+//        val gridPresenter =
+//            VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_MEDIUM)
+//        gridPresenter.numberOfColumns = 4
+////        setGridPresenter(gridPresenter)
+//
+//        val mGridPresenter = GridItemPresenter()
+//        val gridRowAdapter = ArrayObjectAdapter(mGridPresenter)
+//        gridRowAdapter.add(resources.getString(R.string.grid_view))
+//        gridRowAdapter.add(getString(R.string.error_fragment))
+//        gridRowAdapter.add(resources.getString(R.string.personal_settings))
+//
+//        adapter = gridRowAdapter
+    }
 
-        val mGridPresenter = GridItemPresenter()
-        val gridRowAdapter = ArrayObjectAdapter(mGridPresenter)
-        gridRowAdapter.add(resources.getString(R.string.grid_view))
-        gridRowAdapter.add(getString(R.string.error_fragment))
-        gridRowAdapter.add(resources.getString(R.string.personal_settings))
+    private var mRowsAdapter: ArrayObjectAdapter? = null
 
-        adapter = gridRowAdapter
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupUIElement()
+    }
 
+    private fun setupUIElement() {
+        setupRowAdapter()
+    }
 
+    private fun setupRowAdapter() {
+        mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
+        adapter = mRowsAdapter
+        Handler().postDelayed({
+            loadRows()
+        }, 500)
+    }
+
+    private fun loadRows() {
+        val json: String? =
+            Utils.inputStreamToString(resources.openRawResource(R.raw.cards_example))
+        val rows: Array<CardRow> = Gson().fromJson<Array<CardRow>>(json, Array<CardRow>::class.java)
+        Timber.d("jsonData : $json")
+        Timber.d("gsonConverted : $rows")
+        for (row in rows) {
+            mRowsAdapter?.add(createCardRow(row))
+        }
+    }
+
+    private fun createCardRow(cardRow: CardRow): Row? {
+//        return when (cardRow.type) {
+//            CardRow.TYPE_SECTION_HEADER -> SectionRow(HeaderItem(cardRow.title))
+//            CardRow.TYPE_DIVIDER -> DividerRow()
+//            CardRow.TYPE_DEFAULT -> {
+//                // Build main row using the ImageCardViewPresenter.
+//                val presenterSelector: CardPresenterSelector? = activity?.let { CardPresenterSelector(it) }
+//                val listRowAdapter = ArrayObjectAdapter(presenterSelector)
+//                for (card in cardRow.cards!!) {
+//                    listRowAdapter.add(card)
+//                }
+//                CardListRow(HeaderItem(cardRow.title), listRowAdapter, cardRow)
+//            }
+//            else -> {
+//                val presenterSelector: CardPresenterSelector? = activity?.let { CardPresenterSelector(it) }
+//                val listRowAdapter = ArrayObjectAdapter(presenterSelector)
+//                for (card in cardRow.cards!!) {
+//                    listRowAdapter.add(card)
+//                }
+//                CardListRow(HeaderItem(cardRow.title), listRowAdapter, cardRow)
+//            }
+//        }
+        return if (!cardRow.cards.isNullOrEmpty()) {
+            val presenterSelector: CardPresenterSelector? =
+                activity?.let { CardPresenterSelector(it) }
+            val listRowAdapter = ArrayObjectAdapter(presenterSelector)
+            for (card in cardRow.cards!!) {
+                listRowAdapter.add(card)
+            }
+            CardListRow(HeaderItem(cardRow.title), listRowAdapter, cardRow)
+        } else {
+
+            val listRowAdapter = ArrayObjectAdapter(ListRowPresenter())
+            CardListRow(HeaderItem(cardRow.title),listRowAdapter,cardRow)
+        }
     }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        Log.i(TAG, "onCreate")
