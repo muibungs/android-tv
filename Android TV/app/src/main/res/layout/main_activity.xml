@@ -25,16 +25,15 @@
         android:id="@+id/menuContainer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:focusable="true"
         android:background="@android:color/black"
+        android:nextFocusLeft="@id/contentContainer"
+        android:focusable="true"
         android:orientation="vertical">
 
         <com.example.myapplication.CustomTextView
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusLeft="@id/contentContainer1"
-            android:nextFocusRight="@id/contentContainer1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,22 +43,18 @@
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusLeft="@id/contentContainer1"
-            android:nextFocusRight="@id/contentContainer1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button1" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <LinearLayout
-        android:id="@+id/contentContainertv"
+        android:id="@+id/contentContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:focusable="true"
+        android:nextFocusLeft="@id/menuContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/menuContainer"
@@ -68,43 +63,8 @@
         <fragment
             android:name="com.example.myapplication.tvlayout.MainFragment"
             android:layout_width="match_parent"
+            android:id="@+id/content_fragment"
             android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/contentContainer1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/menuContainer"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Header 1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Header 2"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
 

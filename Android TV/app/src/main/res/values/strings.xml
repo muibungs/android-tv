@@ -108,4 +108,7 @@
     <string name="dismiss_error">Dismiss</string>
     <string name="title_activity_main5">Leanback Main5Activity Title</string>
     <string name="title_activity_main_t_v">Leanback MainTVActivity Title</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
