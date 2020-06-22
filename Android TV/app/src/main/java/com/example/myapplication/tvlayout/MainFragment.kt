@@ -69,18 +69,18 @@ class MainFragment : RowsSupportFragment() {
         val list = MovieList.list
 
         val rowsAdapter = ArrayObjectAdapter(ListRowPresenter(FocusHighlight.ZOOM_FACTOR_XSMALL,true))
-        val cardPresenter = CardPresenter()
+//        val cardPresenter = CardPresenter()
 
         for (i in 0 until NUM_ROWS) {
             if (i != 0) {
                 Collections.shuffle(list)
             }
-            val listRowAdapter = ArrayObjectAdapter(cardPresenter)
+//            val listRowAdapter = ArrayObjectAdapter(cardPresenter)
             for (j in 0 until NUM_COLS) {
-                listRowAdapter.add(list[j % 5])
+//                listRowAdapter.add(list[j % 5])
             }
             val header = HeaderItem(i.toLong(), MovieList.MOVIE_CATEGORY[i])
-            rowsAdapter.add(ListRow(header, listRowAdapter))
+//            rowsAdapter.add(ListRow(header, listRowAdapter))
         }
 
         adapter = rowsAdapter

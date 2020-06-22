@@ -1,188 +1,112 @@
 package com.example.myapplication
 
-import android.app.Activity
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.example.myapplication.tvlayout.MainFragment
 import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.android.synthetic.main.menu_item.view.*
 
 
-class MainActivity : FragmentActivity() {
-    var TAG = "MainActivity"
+class MainActivity : FragmentActivity(), View.OnFocusChangeListener {
 
-    var currentMenu: View? = null
-    var menuSelection = true
-    var menuFocus = true
+    var isSelectedMenu: View? = null
+    var menuSelection: Boolean = true
+    var lastedFocus: View? = null
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-//        menuContainer.setOnFocusChangeListener { v, hasFocus ->
-//            Log.d(TAG, "menuContainer hasFocus $hasFocus")
-//            if (hasFocus) motionLayout.transitionToStart() else motionLayout.transitionToEnd()
-//        }
-
-        content_fragment.requireView().isFocusable = true
-
-        contentContainer.setOnFocusChangeListener { v, hasFocus ->
-            Log.d(TAG, "contentContainertv hasFocus $hasFocus")
-            if (hasFocus) {
-                motionLayout.transitionToEnd()
-//                content_fragment.requireView().requestFocus()
-            } else {
-                motionLayout.transitionToStart()
-//                content_fragment.requireView().clearFocus()
-//                currentMenu!!.requestFocus()
-            }
-
-            val color =
-                if (hasFocus) android.R.color.darker_gray else android.R.color.holo_blue_dark
-//            contentContainer1.background = getDrawable(color)
-
-            if (hasFocus) {
-//                contentContainer1.nextFocusLeftId = currentMenu
-            }
+        if (savedInstanceState == null) {
+            val fragment = MainFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.main_browse_fragment, fragment)
+                .commit()
         }
 
-        menuContainer.setOnTouchListener { v, event ->
-            TestLog("menuContainer hasFocus $event")
-            true
+        btn1.requestFocus()
+        menuSelection = true
+
+        btn1.setOnKeyListener { v, keyCode, event ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                menuCheckSelection(v, keyCode, event)
+            }
+            false
         }
 
-//        content_fragment.view!!.setOnFocusChangeListener { v, hasFocus ->
-//            Log.d(TAG, "content_fragment requireView $hasFocus")
-//
-//        }
-
-        button1.setOnFocusChangeListener { v, hasFocus ->
-            TestLog("button1 hasFocus $hasFocus")
-            if (hasFocus) {
-                currentMenu = button1
-                checkState()
+        btn2.setOnKeyListener { v, keyCode, event ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                menuCheckSelection(v, keyCode, event)
             }
-            menuSelection = hasFocus
-
-
+            false
         }
 
-        button2.setOnFocusChangeListener { v, hasFocus ->
-            TestLog("button2 hasFocus $hasFocus")
-
-            if (hasFocus) {
-                currentMenu = button2
-                checkState()
+        btn3.setOnKeyListener { v, keyCode, event ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                menuCheckSelection(v, keyCode, event)
             }
-            menuSelection = hasFocus
+            false
         }
-
-        motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-
+        btn4.setOnKeyListener { v, keyCode, event ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                menuCheckSelection(v, keyCode, event)
             }
+            false
+        }
+        mock.setOnKeyListener { v, keyCode, event ->
 
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-            }
-
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-//                Log.d(TAG, " p1 $p1 $p2 $p3")
-//                tvMenu1.alpha = 1 - p3
-//                tvMenu2.alpha = 1 - p3
-            }
-
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-
-//                if (menuFocus) {
-//                    button1.tv_menu.visibility = View.VISIBLE
-//                    button2.tv_menu.visibility = View.VISIBLE
-//                } else {
-//                    button1.tv_menu.visibility = View.GONE
-//                    button2.tv_menu.visibility = View.GONE
-//                }
-            }
-
-        })
+            mockCheckSelection(v, keyCode, event)
+            false
+        }
+    }
 
 
-//        recyclerView1.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//
-//        recyclerView2.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-//        recyclerView1.adapter = MyListAdapter()
-//        recyclerView2.adapter = MyListAdapter()
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun mockCheckSelection(v: View, keyCode: Int, event: KeyEvent) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT && event.action == KeyEvent.ACTION_UP) {
+            lastedFocus?.requestFocus()
+            menuSelection = true
+            btn1.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn2.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn3.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn4.background = getDrawable(R.drawable.menu_bg_color_selector)
+//            motionLayout.transitionToStart()
+        }
 
     }
 
-    fun TestLog(s: String) {
-        Log.d(TAG, s)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun menuCheckSelection(v: View, keyCode: Int, event: KeyEvent) {
+        if (!menuSelection) {
+            lastedFocus?.requestFocus()
+            menuSelection = true
+            btn1.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn2.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn3.background = getDrawable(R.drawable.menu_bg_color_selector)
+            btn4.background = getDrawable(R.drawable.menu_bg_color_selector)
+        }
+        if (menuSelection && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && event.action == KeyEvent.ACTION_DOWN) {
+            btn1.background = null
+            btn2.background = null
+            btn3.background = null
+            btn4.background = null
+            v.setBackgroundColor(Color.WHITE)
+            menuSelection = false
+        }
+
+        if (menuSelection) {
+            Log.d("TAG", "menu Selected")
+        } else {
+            Log.d("TAG", "menu Un Selection")
+            lastedFocus = v
+        }
     }
 
-    fun checkState() {
-        if (motionLayout.currentState == motionLayout.endState) {
-            motionLayout.transitionToStart()
-        }
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+
     }
 }
-
-
-//
-//class MyListAdapter :
-//    RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
-//    override fun onCreateViewHolder(
-//        parent: ViewGroup,
-//        viewType: Int
-//    ): ViewHolder {
-//        val layoutInflater = LayoutInflater.from(parent.context)
-//        val listItem: View = layoutInflater.inflate(R.layout.list_item, parent, false)
-//        return ViewHolder(listItem)
-//    }
-//
-//    override fun onBindViewHolder(
-//        holder: ViewHolder,
-//        position: Int
-//    ) {
-//
-//        holder.textView.setText("position $position")
-//        holder.relativeLayout.setOnClickListener { view ->
-//            Toast.makeText(
-//                view.context,
-//                "click on item: $position",
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
-//    }
-//
-//    override fun getItemCount(): Int {
-//        return 10
-//    }
-//
-//    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        var imageView: ImageView
-//        var textView: TextView
-//        var relativeLayout: RelativeLayout
-//
-//        init {
-//            imageView = itemView.findViewById<View>(R.id.imageView) as ImageView
-//            textView = itemView.findViewById<View>(R.id.textView) as TextView
-//            relativeLayout =
-//                itemView.findViewById<View>(R.id.relativeLayout) as RelativeLayout
-//
-//
-//        }
-//    }
-//}
