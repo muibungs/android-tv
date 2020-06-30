@@ -1,0 +1,280 @@
+query getHome {
+    Billboard: listBillboard {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    BugabooInter: Categories(path: "bugaboointer") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+        content_bugaboointer_url
+    }
+    FinEx: Categories(path: "finex") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+        content_bugaboointer_url
+    }
+    DramaOnAir: Categories(path: "dramaonair") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    DramaRerun: Categories(path: "dramarerun") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    Recommended: Contents(path: "recommended") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    News: Contents(path: "news") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    Sports: Contents(path: "sports") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    Muaythai: Contents(path: "muaythai") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    Entertain: Contents(path: "entertain") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    Movies: Contents(path: "movies") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    TvShows: Categories(path: "tvshows") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    Documentary: Categories(path: "documentary") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    OriginalContent: Categories(path: "originalcontent") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    Podcast: Contents(path: "podcast") {
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        description_url
+        thumb
+        thumb_vertical
+        thumb_horizontal
+        content_url
+        entry_date
+        views
+        path
+    }
+    Bugaboo: Categories(path: "bugaboo") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+    LiveProgram: LiveProgramme {
+        path
+        entry_id
+        channel_id
+        channel_name
+        title
+        description
+        thumb
+        content_url
+        entry_date
+    }
+}
+
+query GetFinexCategories($skip: Int, $limit: Int){
+    FinexCategories(skip: $skip, limit: $limit) {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+        content_bugaboointer_url
+      }
+}
+
+query getDrama {
+    Categories(path: "dramarerun") {
+        category_id
+        parent_id
+        category_name
+        category_description
+        category_image
+        category_image_cover
+        category_video_cat
+        category_video_group
+        category_sort
+        path
+    }
+}
+
+query getMovie {
+    Contents(path: "movies") {
+            entry_id
+            channel_id
+            channel_name
+            title
+            description
+            description_url
+            thumb
+            thumb_vertical
+            thumb_horizontal
+            content_url
+            entry_date
+            views
+            path
+    }
+}

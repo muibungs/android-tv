@@ -32,7 +32,6 @@ import com.example.myapplication.ui.presenter.CardPresenterSelector
 import com.example.myapplication.R
 import com.example.myapplication.Utils
 import com.google.gson.Gson
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -89,8 +88,6 @@ class MainFragment : RowsSupportFragment() {
         val json: String? =
             Utils.inputStreamToString(resources.openRawResource(R.raw.cards_example))
         val rows: Array<CardRow> = Gson().fromJson<Array<CardRow>>(json, Array<CardRow>::class.java)
-        Timber.d("jsonData : $json")
-        Timber.d("gsonConverted : $rows")
         for (row in rows) {
             mRowsAdapter?.add(createCardRow(row))
         }

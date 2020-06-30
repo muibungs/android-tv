@@ -1,0 +1,90 @@
+{
+    "UserAgent": "aws-amplify-cli/0.1.0",
+    "Version": "1.0",
+    "IdentityManager": {
+        "Default": {}
+    },
+    "AppSync": {
+        "Default": {
+            "ApiUrl": "https://pgeeibv2qvbxvdb5tehzlzv7nq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-yjv523gxcjekdkd3lpk4rofq54",
+            "ClientDatabasePrefix": "ch7hdapi_dev_API_KEY"
+        },
+        "ch7hdapi": {
+            "ApiUrl": "https://pgeeibv2qvbxvdb5tehzlzv7nq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-4c5ztkpry5az7eh4b3vdscuove",
+            "ClientDatabasePrefix": "ch7hdapi_dev_API_KEY"
+        },
+        "ch7hdapi-dev_AMAZON_COGNITO_USER_POOLS": {
+            "ApiUrl": "https://pgeeibv2qvbxvdb5tehzlzv7nq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "AMAZON_COGNITO_USER_POOLS",
+            "ClientDatabasePrefix": "ch7hdapi_dev_AMAZON_COGNITO_USER_POOLS"
+        },
+        "bugaboobff-dev": {
+            "ApiUrl": "https://5ewj5sfkzzef3oyfaka622cfhi.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-mfkubjjbqbfsdpnknr7pluuqna",
+            "ClientDatabasePrefix": "bugaboobff_API_KEY"
+        },
+        "bugaboobff-prod": {
+            "ApiUrl": "https://mlf3bqmq7vfcnfkrk5weaq2oqq.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-j4e6mkdzj5eurjdmqejlpixmiu",
+            "ClientDatabasePrefix": "bugaboobff_API_KEY"
+        },
+        "finfinApi": {
+            "ApiUrl": "https://t3rrww2l3bg2hpysxlmudoftnm.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-hjmvyldghzh3zpcixez7jqb6de",
+            "ClientDatabasePrefix": "finfinApi_dev_API_KEY"
+        },
+        "payment-dev": {
+            "ApiUrl": "https://enpu6sclifayvj7k6hxndc2msa.appsync-api.ap-southeast-1.amazonaws.com/graphql",
+            "Region": "ap-southeast-1",
+            "AuthMode": "API_KEY",
+            "ApiKey": "da2-ryjufiiz5rhcpgj7yhpeyqztdm",
+            "ClientDatabasePrefix": "payment_dev_API_KEY"
+        }
+    },
+    "CredentialsProvider": {
+        "CognitoIdentity": {
+            "Default": {
+                "PoolId": "ap-southeast-1:35024308-d88f-4c16-ac4a-0ed7695dabf2",
+                "Region": "ap-southeast-1"
+            }
+        }
+    },
+    "CognitoUserPool": {
+        "Default": {
+            "PoolId": "ap-southeast-1_CsNCbbKFl",
+            "AppClientId": "7erd4tj8nu8tjifj5c96211fnm",
+            "AppClientSecret": "1526e2hi8ms5onjij14uipqba23ej23s00euep3md716cj1336cj",
+            "Region": "ap-southeast-1"
+        }
+    },
+    "S3TransferUtility": {
+        "Default": {
+            "Bucket": "finfin-bucket-dev",
+            "Region": "ap-southeast-1"
+        }
+    },
+    "PinpointAnalytics": {
+        "Default": {
+            "AppId": "5d6377ad5f994389a34d2d96dc5d3bde",
+            "Region": "us-west-2"
+        }
+    },
+    "PinpointTargeting": {
+        "Default": {
+            "Region": "us-west-2"
+        }
+    }
+}

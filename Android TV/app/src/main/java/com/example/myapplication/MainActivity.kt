@@ -12,12 +12,26 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserStateDetails
+import com.example.myapplication.data.result.Result
+import com.example.myapplication.di.dataModule
+import com.example.myapplication.di.domainModule
+import com.example.myapplication.di.viewModelModule
+import com.example.myapplication.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.android.synthetic.main.menu_item.view.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.startKoin
+import timber.log.Timber
 
 
 class MainActivity : FragmentActivity() {
@@ -26,90 +40,119 @@ class MainActivity : FragmentActivity() {
     var currentMenu = -1
     var menuSelection = true
     var menuFocus = true
+    private val homeViewModel: HomeViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-//        menuContainer.setOnFocusChangeListener { v, hasFocus ->
-//            Log.d(TAG, "menuContainer hasFocus $hasFocus")
-//            if (hasFocus) motionLayout.transitionToStart() else motionLayout.transitionToEnd()
+////        menuContainer.setOnFocusChangeListener { v, hasFocus ->
+////            Log.d(TAG, "menuContainer hasFocus $hasFocus")
+////            if (hasFocus) motionLayout.transitionToStart() else motionLayout.transitionToEnd()
+////        }
+//        button1.requestFocus()
+//        currentMenu = button1.id
+//
+//
+//
+//
+//
+//        contentContainertv.setOnFocusChangeListener { v, hasFocus ->
+//            Log.d(TAG, "contentContainertv hasFocus $hasFocus")
+//            if (hasFocus) motionLayout.transitionToEnd() else motionLayout.transitionToStart()
+//
+//            val color =
+//                if (hasFocus) android.R.color.darker_gray else android.R.color.holo_blue_dark
+//            contentContainer1.background = getDrawable(color)
+//
+//            if (hasFocus) {
+//                contentContainer1.nextFocusLeftId = currentMenu
+//            }
 //        }
+//
+//        button1.setOnFocusChangeListener { v, hasFocus ->
+//            if (hasFocus) currentMenu = button1.id
+//            menuSelection = hasFocus
+//        }
+//
+//        button2.setOnFocusChangeListener { v, hasFocus ->
+//            if (hasFocus) currentMenu = button2.id
+//            menuSelection = hasFocus
+//        }
+//
+//        motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+//            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+//
+//            }
+//
+//            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+//            }
+//
+//            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+//                Log.d(TAG, " p1 $p1 $p2 $p3")
+////                tvMenu1.alpha = 1 - p3
+////                tvMenu2.alpha = 1 - p3
+//            }
+//
+//            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+//
+//                if (menuFocus) {
+//                    button1.tv_menu.visibility = View.VISIBLE
+//                    button2.tv_menu.visibility = View.VISIBLE
+//                } else {
+//                    button1.tv_menu.visibility = View.GONE
+//                    button2.tv_menu.visibility = View.GONE
+//                }
+//            }
+//
+//        })
+//
+//
+//
+//
+//        recyclerView1.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//
+//        recyclerView2.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//
+//        recyclerView1.adapter = MyListAdapter()
+//        recyclerView2.adapter = MyListAdapter()
+//
+        initInstance()
+    }
 
+    private fun initInstance(){
+        setObserve()
+        getData()
+    }
 
-        button1.requestFocus()
-        currentMenu = button1.id
+    private fun setObserve() {
+        setHomeObserve()
+    }
 
+    private fun setHomeObserve() {
+        homeViewModel.homes.observe(this, Observer {
+            when (it) {
+                is Result.Success -> {
+                    Timber.d("${it.data}")
+                }
+                is Result.Error -> {
+                    Timber.d("${it.exception}")
+                }
+                is Result.Loading -> {
 
-
-
-
-        contentContainertv.setOnFocusChangeListener { v, hasFocus ->
-            Log.d(TAG, "contentContainertv hasFocus $hasFocus")
-            if (hasFocus) motionLayout.transitionToEnd() else motionLayout.transitionToStart()
-
-            val color =
-                if (hasFocus) android.R.color.darker_gray else android.R.color.holo_blue_dark
-            contentContainer1.background = getDrawable(color)
-
-            if (hasFocus) {
-                contentContainer1.nextFocusLeftId = currentMenu
-            }
-        }
-
-        button1.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) currentMenu = button1.id
-            menuSelection = hasFocus
-        }
-
-        button2.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) currentMenu = button2.id
-            menuSelection = hasFocus
-        }
-
-        motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-
-            }
-
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-            }
-
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-                Log.d(TAG, " p1 $p1 $p2 $p3")
-//                tvMenu1.alpha = 1 - p3
-//                tvMenu2.alpha = 1 - p3
-            }
-
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-
-                if (menuFocus) {
-                    button1.tv_menu.visibility = View.VISIBLE
-                    button2.tv_menu.visibility = View.VISIBLE
-                } else {
-                    button1.tv_menu.visibility = View.GONE
-                    button2.tv_menu.visibility = View.GONE
                 }
             }
-
         })
-
-
-
-
-        recyclerView1.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        recyclerView2.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        recyclerView1.adapter = MyListAdapter()
-        recyclerView2.adapter = MyListAdapter()
-
-
     }
+
+    private fun getData(){
+        homeViewModel.getHome(true)
+    }
+
 }
 
-class MyListAdapter :
-    RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
+class MyListAdapter : RecyclerView.Adapter<MyListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

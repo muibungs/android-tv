@@ -5,13 +5,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/lb_playback_controls_background_dark">
 
         <fragment
             android:id="@+id/row_frame"
             android:name="com.bbtvnewmedia.androidtv.ui.fragment.RowsFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

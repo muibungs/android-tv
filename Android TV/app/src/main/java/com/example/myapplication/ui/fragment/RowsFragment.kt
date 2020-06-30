@@ -1,37 +1,91 @@
 package com.bbtvnewmedia.androidtv.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.*
+import androidx.lifecycle.Observer
 import com.example.myapplication.model.CardListRow
 import com.example.myapplication.model.CardRow
 import com.example.myapplication.R
 import com.example.myapplication.Utils
-import com.example.myapplication.ui.presenter.CardPresenterSelector
+import com.example.myapplication.data.result.Result
+import com.example.myapplication.ui.home.HomeViewModel
+import com.example.myapplication.ui.presenter.*
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class RowsFragment : RowsSupportFragment() {
 
     private var mRowsAdapter: ArrayObjectAdapter? = null
+    private val homeViewModel : HomeViewModel by viewModel()
+    private lateinit var cardCategoryPresenter : CardCategoryPresenter
+    private lateinit var cardContentPresenter: CardContentPresenter
+    private var cardDramaRowAdapter = ArrayObjectAdapter()
+    private var cardMovieRowAdapter = ArrayObjectAdapter()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        this.view?.setBackgroundResource(R.drawable.background_food)
         setupUIElement()
     }
 
     private fun setupUIElement() {
         setupRowAdapter()
+        setObserve()
     }
 
     private fun setupRowAdapter() {
-        mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
-        adapter = mRowsAdapter
-        Handler().postDelayed({
-            loadRows()
-        }, 500)
+        context?.let {
+            cardCategoryPresenter = CardCategoryPresenter(it)
+            cardDramaRowAdapter = ArrayObjectAdapter(cardCategoryPresenter)
+            cardContentPresenter = CardContentPresenter(it)
+            cardMovieRowAdapter = ArrayObjectAdapter(cardContentPresenter)
+            mRowsAdapter = ArrayObjectAdapter(CustomListRowPresenter())
+            adapter = mRowsAdapter
+            loadData()
+        }
+//        Handler().postDelayed({
+//            loadDarma()
+//        }, 500)
     }
+
+    private fun setObserve(){
+        homeViewModel.dramaRerun.observe(this, Observer {
+            when(it){
+                is Result.Success -> {
+                    cardDramaRowAdapter.clear()
+                    it.data.forEach { category ->
+                        cardDramaRowAdapter.add(category)
+                    }
+                    val header = IconHeaderItem(0, "ละคร", R.drawable.ic_main_icon)
+                    val videoListRow = CustomListRow(header, cardDramaRowAdapter)
+                    mRowsAdapter?.add(videoListRow)
+                    adapter = mRowsAdapter
+                }
+            }
+        })
+
+        homeViewModel.movies.observe(this, Observer {
+            when(it){
+                is Result.Success -> {
+                    it.data.forEach { content ->
+                        cardMovieRowAdapter.add(content)
+                    }
+                    val header = IconHeaderItem(0, "ดูหนังออนไลน์", R.drawable.ic_main_icon)
+                    val videoListRow = CustomListRow(header, cardMovieRowAdapter)
+                    mRowsAdapter?.add(videoListRow)
+                    adapter = mRowsAdapter
+                }
+            }
+        })
+    }
+
+    private fun loadData(){
+        homeViewModel.getDramaRerun(true)
+        homeViewModel.getMovies(true)
+    }
+
 
     private fun loadRows() {
         val json: String? =
